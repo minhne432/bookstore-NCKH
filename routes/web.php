@@ -14,7 +14,13 @@ use App\Http\Controllers\BookshopHomeController;
 |
 */
 
-Route::get('/', [BookshopHomeController::class, 'index']);
+Route::get('/', [BookshopHomeController::class, 'index'])->name('home');
+// Route::get('/books', [BookController::class, 'index'])->name('books');
+// Route::get('/categories', [CategoryController::class, 'index'])->name('categories');
+// Route::get('/about', [AboutController::class, 'index'])->name('about');
+// Route::get('/contact', [ContactController::class, 'index'])->name('contact');
+
+
 Route::get('/details/{isbn13}', [BookshopHomeController::class, 'bookDetails'])->name('book-details');
 
 // web.php

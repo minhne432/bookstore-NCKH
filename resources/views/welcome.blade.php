@@ -61,40 +61,62 @@
             background-color: #0056b3;
             border-color: #004085;
         }
+
+        /* Related book */
+        .carousel-item {
+            transition: transform 0.5s ease;
+        }
+
+        .carousel-control-prev,
+        .carousel-control-next {
+            width: 5%;
+        }
+
+        .carousel-control-prev {
+            left: -5%;
+        }
+
+        .carousel-control-next {
+            right: -5%;
+        }
+
+        .book-card {
+            position: relative;
+            z-index: 1;
+        }
+
+        .carousel-control-prev-icon,
+        .carousel-control-next-icon {
+            background-color: #000;
+            border-radius: 50%;
+            padding: 10px;
+            z-index: 2;
+        }
+
+        .carousel-inner {
+            padding: 0 15px;
+        }
+
+
+        .recommend-heading {
+            font-size: 2rem;
+            /* Kích thước chữ lớn hơn */
+            font-weight: bold;
+            /* Đậm hơn */
+            color: #333;
+            /* Màu sắc chữ */
+            margin-bottom: 30px;
+            /* Thêm khoảng cách phía dưới */
+            text-transform: uppercase;
+            /* Viết hoa toàn bộ chữ */
+        }
     </style>
 </head>
 
 <body>
 
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container">
-            <a class="navbar-brand" href="#"><img src="logo.png" alt="Book Store"></a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Books</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Categories</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Contact</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <!-- Include Navbar -->
+    @include('layouts.navbar')
 
     <!-- Book List -->
     <div class="container mt-4">
@@ -118,6 +140,46 @@
     <div class="d-flex justify-content-center mt-4">
         {{ $listBook->links('pagination::bootstrap-5') }}
     </div>
+
+    @if (Session::has('viewed_isbn13'))
+        <div class="container mt-5">
+            <h2 class="text-center recommend-heading">Recommend books for you</h2>
+            <div id="relatedBooksCarousel" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                    @foreach ($relatedBooks->chunk(4) as $key => $chunk)
+                        <div class="carousel-item @if ($key == 0) active @endif">
+                            <div class="row">
+                                @foreach ($chunk as $relatedBook)
+                                    <div class="col-md-3">
+                                        <div class="book-card text-center">
+                                            <a href="{{ route('book-details', $relatedBook->isbn13) }}">
+                                                <img src="{{ $relatedBook->thumbnail }}" alt="{{ $relatedBook->title }}"
+                                                    class="img-fluid">
+                                            </a>
+                                            <h5 class="book-title">{{ $relatedBook->title }}</h5>
+                                            <p class="book-author">{{ $relatedBook->author }}</p>
+                                            <p class="book-price">${{ $relatedBook->price }}</p>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+                <!-- Controls -->
+                <a class="carousel-control-prev" href="#relatedBooksCarousel" role="button" data-slide="prev"
+                    title="Previous">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#relatedBooksCarousel" role="button" data-slide="next"
+                    title="Next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+        </div>
+    @endif
 
 
 
