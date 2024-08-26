@@ -11,10 +11,10 @@ class BookshopHomeController extends Controller
     //
     public function index()
     {
-        $listBook = Book_item::where('isbn13', '!=', 'null')->take(8)->get(); // Lấy 8 sản phẩm đầu tiên
-        // dd($listBook);
+        $listBook = Book_item::where('isbn13', '!=', 'null')->paginate(8); // Phân trang, mỗi trang 8 sản phẩm
         return view('welcome', compact('listBook'));
     }
+
 
     public function bookDetails($isbn13)
     {
@@ -49,16 +49,16 @@ class BookshopHomeController extends Controller
             'rcmd20_isbns'
         ]);
 
+        // Chuyển ISBNs liên quan vào mảng và loại bỏ khoảng trắng
+        $relatedIsbnsArray = array_map('trim', $relatedIsbns->toArray());
 
-        // Chuyển ISBNs liên quan vào mảng
-        // $relatedIsbnsArray = array_filter($relatedIsbns->toArray());
+        // Lọc bỏ các giá trị rỗng (nếu có)
+        $relatedIsbnsArray = array_filter($relatedIsbnsArray);
 
         // Lấy sách liên quan từ bảng Book_item
-        // $relatedBooks = Book_item::whereIn('isbn13', $relatedIsbnsArray)->get();
+        $relatedBooks = Book_item::whereIn('isbn13', $relatedIsbnsArray)->get();
 
         // Trả về view 'BookDetails' với dữ liệu của sách và sách liên quan
-        return view('BookDetails', compact('book'));
-        // return view('BookDetails', compact('book', 'relatedBooks'));
-
+        return view('BookDetails', compact('book', 'relatedBooks'));
     }
 }

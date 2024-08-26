@@ -16,7 +16,7 @@
         </div>
         <div class="col-md-6">
             <h1>{{ $book->title }}</h1>
-            <p class="text-muted">by {{ $book->author }}</p>
+            <p class="text-muted">by {{ $book->authors }}</p>
             <p><strong>ISBN13:</strong> {{ $book->isbn13 }}</p>
             <p class="text-success"><strong>Price:</strong> ${{ $book->price }}</p>
             <p>{{ $book->description }}</p>
@@ -27,7 +27,7 @@
 
 
 <!-- Related Products Section -->
-<div class="container mt-5">
+{{-- <div class="container mt-5">
     <h2 class="mb-4">Related Products</h2>
     <div class="row">
         <div class="col-md-3">
@@ -46,9 +46,9 @@
         </div>
         <!-- Add more related products as needed -->
     </div>
-</div>
+</div> --}}
 
-{{-- 
+
     <div class="mt-5">
         <h2>Related Books</h2>
         <div class="row">
@@ -67,7 +67,7 @@
         </div>
     </div>
 </div>
---}}
+
 
 <!-- Bootstrap JS and dependencies -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
