@@ -65,21 +65,34 @@
 
 
 
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-6">
-                <img src="{{ $book->thumbnail }}" alt="{{ $book->title }}" class="img-fluid">
-            </div>
-            <div class="col-md-6">
-                <h1>{{ $book->title }}</h1>
-                <p class="text-muted">by {{ $book->authors }}</p>
-                <p><strong>ISBN13:</strong> {{ $book->isbn13 }}</p>
-                <p class="text-success"><strong>Price:</strong> ${{ $book->price }}</p>
-                <p>{{ $book->description }}</p>
-                <a href="#" class="btn btn-primary">Add to Cart</a>
-            </div>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6">
+            <img src="{{ $book->thumbnail }}" alt="{{ $book->title }}" class="img-fluid">
+        </div>
+        <div class="col-md-6">
+            <h1>{{ $book->title }}</h1>
+            <p class="text-muted">by {{ $book->authors }}</p>
+            <p><strong>ISBN13:</strong> {{ $book->isbn13 }}</p>
+            <p class="text-success"><strong>Price:</strong> ${{ $book->price }}</p>
+            <p id="description">
+                @if(strlen($book->description) > 200)
+                    {{ Str::limit($book->description, 200) }}
+                    <span id="dots">...</span>
+                    <span id="more" style="display:none">{{ substr($book->description, 200) }}</span>
+                @else
+                    {{ $book->description }}
+                @endif
+            </p>
+            @if (strlen($book->description) > 200)
+                <button onclick="toggleDescription()" id="myBtn" class="btn btn-link">Xem thêm</button>
+            @endif
+            <a href="#" class="btn btn-primary">Add to Cart</a>
         </div>
     </div>
+</div>
+
+
 
 
 
@@ -130,6 +143,23 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 
+    <script>
+        function toggleDescription() {
+            var dots = document.getElementById("dots");
+            var moreText = document.getElementById("more");
+            var btnText = document.getElementById("myBtn");
+
+            if (dots.style.display === "none") {
+                dots.style.display = "inline";
+                btnText.innerHTML = "Xem thêm";
+                moreText.style.display = "none";
+            } else {
+                dots.style.display = "none";
+                btnText.innerHTML = "Thu gọn";
+                moreText.style.display = "inline";
+            }
+        }
+    </script>
 </body>
 
 </html>
